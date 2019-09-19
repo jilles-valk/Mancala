@@ -13,64 +13,95 @@ public class BowlTest {
 	
 	@Test
 	public void testGetStonesAtStart() {
-		Assert.assertEquals(b.getNumStones(), bowlSize);
+		Assert.assertEquals(4, b.getNumStones());
 	}
 	
 	@Test
 	public void testGetStonesNextBowl() {
-		Assert.assertEquals(b.getBowl(1).getNumStones(),bowlSize - 1);
+		Assert.assertEquals(4, b.getBowl(1).getNumStones());
 	}
-	
-	@Test
-	public void testGetAllStones() {
-		for (int i = 1; i < bowlSize; i++) {
-			Assert.assertEquals(b.getBowl(i).getNumStones(),bowlSize - i);
-		}
-	}
-	
-	@Test 
-	public void testGetFirstBowlStonesThroughLoop() {
-		Assert.assertEquals(b.getBowl(14).getNumStones(),bowlSize);
-	}
-	
-	@Test 
-	public void testGetAllStonesThroughLoop() {
-		for (int i = 14; i < bowlSize*2; i++) {
-			Assert.assertEquals(b.getBowl(i).getNumStones(),bowlSize*2 - i + 1);
-		}
-	}
-	
+
 	@Test 
 	public void testGetFirstKalaha() {
-		Assert.assertEquals(b.getKalaha().getNumStones(),bowlSize - 6);
+		Assert.assertEquals(0, b.getKalaha().getNumStones());
 	}
 	
 	@Test
 	public void testPassThreeStones() {
 		b.pass(3);
 		for (int i = 1; i < 4; i++) {
-			Assert.assertEquals(b.getBowl(i).getNumStones(),bowlSize - i + 1);
+			Assert.assertEquals(4 + 1, b.getBowl(i).getNumStones());
 		}
+		Assert.assertEquals(4, b.getBowl(5).getNumStones());
 	}
 	
-	@Ignore @Test
+	@Test
 	public void testPassOtherUserKalaha() {
-		b.getBowl(12).pass(4);
-		Assert.assertEquals(b.getBowl(13).getNumStones(),0);
+		b.play(5);
+		Assert.assertEquals(1, b.getKalaha().getNumStones());
+		b.play(11);
+		Assert.assertEquals(1, b.getBowl(11).getKalaha().getNumStones());
 	}
 	
 	@Test 
-	public void testPlayerHasOpponent() {
-		Assert.assertTrue(p1.getOpponent().isMyTurn());
-		Assert.assertTrue(p2.getOpponent().isMyTurn());
+	public void testBowlHasCorrectPlayer() {
+		Assert.assertEquals(b.getPlayer().isMyTurn(), true);
+		for (int i = 1; i < bowlSize+1; i++) {
+			Assert.assertEquals(i <= 6, b.getBowl(i).getPlayer().isMyTurn());
+		}
+	}
+	
+	@Test 
+	public void testPlay() {
+		int toPlay = 4;
+		b.play(toPlay);
+		if (toPlay == 0) {
+			Assert.assertEquals(0, b.getNumStones());
+			Assert.assertEquals(5, b.getBowl(1).getNumStones());
+		}
+		else {
+			Assert.assertEquals(0, b.getBowl(toPlay).getNumStones());
+			Assert.assertEquals(5, b.getBowl(toPlay).getBowl(1).getNumStones());
+		}
+	}
+	
+	@Test
+	public void testPlayKalaha() {
+		b.play(6);
+		Assert.assertEquals(0, b.getKalaha().getNumStones());
+		Assert.assertEquals(4, b.getKalaha().getBowl(1).getNumStones());
+	}
+	
+	@Ignore @Test //works when initial numStones is 1
+	public void testIsGameOver() {
+		for (int i = 0; i < 6; i++) {
+			b.play(i);
+		}
+		Assert.assertTrue(b.isGameOver());
+	}
+	
+	@Test 
+	public void testSwitchTurn() {
+		Assert.assertTrue(b.getPlayer().isMyTurn());
+		b.play(1);
+		Assert.assertFalse(b.getPlayer().isMyTurn());
+	}
+	
+	@Test
+	public void testEndInEmptyBowlCurrentPlayer() {
+		b.play(4);
+		b.play(8);
+		b.play(0);
+		Assert.assertEquals(0, b.getBowl(4).getNumStones());
+		Assert.assertEquals(9, b.getKalaha().getNumStones());
 	}
 	
 	@Before
 	public void setup() {
-		p1 = new Player(p2 = new Player(p1));
-		p2 = new Player(p1);
+		p1 = new Player(true);
+		p2 = p1.getOpponent();
 		bowlSize = 13;
-		b = new Bowl(bowlSize);
+		b = new Bowl(p1, bowlSize);
 	}
 	
 }

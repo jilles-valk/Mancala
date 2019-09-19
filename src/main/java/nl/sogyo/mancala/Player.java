@@ -3,15 +3,15 @@ package nl.sogyo.mancala;
 public class Player {
 	private boolean isMyTurn;
 	private Player opponent;
-
-	public Player() {
-		opponent = new Player(this);
-		isMyTurn = true;
+	
+	public Player(boolean isMyTurn) {
+		this.opponent = new Player(this, !isMyTurn);
+		this.isMyTurn = isMyTurn;
 	}
 	
-	public Player(Player opponent) {
-		this.opponent = opponent;
-		isMyTurn = false;
+	private Player(Player player, boolean isMyTurn) {
+		opponent = player;
+		this.isMyTurn = isMyTurn;
 	}
 
 	public boolean isMyTurn() {
@@ -22,5 +22,9 @@ public class Player {
 		return opponent;
 	}
 	
+	public void switchTurn() {
+		getOpponent().isMyTurn = isMyTurn;
+		isMyTurn = !isMyTurn;
+	}
 	
 }
