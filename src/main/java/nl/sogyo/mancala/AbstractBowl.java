@@ -5,6 +5,9 @@ public abstract class AbstractBowl {
 	protected int numStones;
 	
 	public AbstractBowl(AbstractBowl first, AbstractBowl next, int size) {
+//		if (size == 13) {
+//			first = this;
+//		}
 		if (size == 8 || size == 1) {
 			this.next = new Kalaha(first, next, size - 1);
 		}
@@ -15,17 +18,28 @@ public abstract class AbstractBowl {
 			this.next = new Bowl(first, next, size - 1);
 		}
 		
-		
-		numStones = 4;
+		numStones = size;
 	}
 	
-	public AbstractBowl() {
-		next = null;
-		numStones = 4;
+	public AbstractBowl(int size) {
+		this.next = new Bowl(this, null, size - 1);
+		numStones = size;
 	}
+
 	
 	public int getNumStones() {
 		return numStones;
+	}
+	
+	/* Needs more work: should not pass other players Kalaha, 
+	 * should do something when end in Kalaha, 
+	 * should do something when end in empty from same player.
+	 */
+	public void pass(int numStonesPrevABowl) {
+		if (numStonesPrevABowl != 0) {
+			next.pass(numStonesPrevABowl - 1);
+		}
+		numStones++;
 	}
 	
 	public AbstractBowl getBowl(int numBowlsRight) {
@@ -33,8 +47,11 @@ public abstract class AbstractBowl {
 			return next;
 		}
 		else {
-			next.getBowl(numBowlsRight - 1);
+			return next.getBowl(numBowlsRight - 1);
 		}
-		return null;
+	}
+	
+	public AbstractBowl getKalaha() {
+		return next.getKalaha();
 	}
 }
