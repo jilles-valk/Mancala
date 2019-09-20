@@ -20,4 +20,8 @@ public class Bowl extends AbstractBowl{
 			return next.getBowlInfo(bowlsNext - 1);
 		}
 	}
+	
+	protected Player getWinner() {
+		return next.getWinner();
+	}
 }

@@ -16,7 +16,9 @@ public class TestFrontEnd {
 		b = new Bowl(p1, bowlSize);
 		Scanner input = new Scanner(System.in);
 
-		while (true) {
+		startUp();
+		
+		while (!b.isGameOver(0, 0)) {
 			printBoard();
 			if (input.hasNextInt()){
 				toPlay = input.nextInt();
@@ -25,6 +27,13 @@ public class TestFrontEnd {
 				}
 			}
 		}
+		if (b.getWinner().isMyTurn() == p1.isMyTurn()) {
+			System.out.println("Player 1 has won!");
+		}
+		else {
+			System.out.println("Player 2 has won!");
+		}
+		input.close();
 	}
 
 	public void printBoard() {
@@ -45,6 +54,29 @@ public class TestFrontEnd {
 			System.out.print(b.getBowlInfo(bowlNum));
 		}
 		System.out.println();
+	}
+	
+	private void startUp() {
+		b.play(0);
+		b.play(7);
+		b.play(1);
+		b.play(8);
+		b.play(2);
+		b.play(9);
+		b.play(3);
+		b.play(4);
+		b.play(12);
+		b.play(11);
+		b.play(10);
+		b.play(11);
+		b.play(5);
+		b.play(12);
+		b.play(0);
+		b.play(7);
+		b.play(1);
+		printBoard();
+		b.play(8);
+		printBoard();
 	}
 
 }

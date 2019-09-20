@@ -77,7 +77,7 @@ public class BowlTest {
 		for (int i = 0; i < 6; i++) {
 			b.play(i);
 		}
-		Assert.assertTrue(b.isGameOver(0));
+		Assert.assertTrue(b.isGameOver(0, 0));
 	}
 	
 	@Test 

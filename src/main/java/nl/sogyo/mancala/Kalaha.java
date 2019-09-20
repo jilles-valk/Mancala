@@ -39,11 +39,14 @@ public class Kalaha extends AbstractBowl{
 		}
 	}
 
-	public boolean isGameOver(int timesPassedKalaha) {
-		if (player.isMyTurn()) {
+	public boolean isGameOver(int timesPassedKalaha, int timesZero) {
+		if (timesZero == 6 && player.isMyTurn()) {
 			return true;
 		}
-		return next.isGameOver(timesPassedKalaha);
+		if (player.isMyTurn() && timesPassedKalaha == 2) {
+			return false;
+		}
+		return next.isGameOver(timesPassedKalaha + 1, 0);
 	}
 
 	public String getBowlInfo(int bowlsNext) {
@@ -53,5 +56,12 @@ public class Kalaha extends AbstractBowl{
 		else {
 			return next.getBowlInfo(bowlsNext - 1);
 		}
+	}
+	
+	protected Player getWinner() {
+		if (next.getKalaha().numStones > numStones) {
+			return player.getOpponent();
+		}
+		return player;
 	}
 }

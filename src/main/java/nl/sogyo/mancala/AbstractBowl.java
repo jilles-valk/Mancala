@@ -83,6 +83,7 @@ public abstract class AbstractBowl {
 	public void play(int bowlNum) {
 		if (bowlNum == 0) {
 			if (player.isMyTurn() && numStones != 0) {
+				
 				next.pass(numStones);
 				numStones = 0;
 			}
@@ -92,17 +93,17 @@ public abstract class AbstractBowl {
 		}
 	}
 	
-	public boolean isGameOver(int timesPassedKalaha) {
-		if (player.isMyTurn()) {
-			if (numStones == 0) {
-				return next.isGameOver(timesPassedKalaha);
-			}
+	public boolean isGameOver(int timesPassedKalaha, int numZero) {
+		if (numStones == 0) {
+			return next.isGameOver(timesPassedKalaha, numZero + 1);
+		}
+		if (timesPassedKalaha == 1 && numStones != 0) {
 			return false;
 		}
-		else {
-			return next.isGameOver(timesPassedKalaha);
-		}
+		return next.isGameOver(timesPassedKalaha, numZero);
 	}
+
+	protected abstract Player getWinner();
 	
 	public abstract String getBowlInfo(int bowlsNext);
 }
