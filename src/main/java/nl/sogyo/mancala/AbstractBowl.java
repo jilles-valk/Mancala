@@ -40,14 +40,14 @@ public abstract class AbstractBowl {
 	}
 	
 	public void pass(int numStonesFromPrevABowl) {
-		if (numStonesFromPrevABowl != 0) {
+		if (numStonesFromPrevABowl != 1) {
 			next.pass(numStonesFromPrevABowl - 1);
 		}
-		if (numStones != 0) {
-			numStones++;
+		if (numStones == 0 && player.isMyTurn()) {
+			passToKalaha(getBowl(bowlsUntillKalaha(0) * 2 + 1).takeStones() + 1);
 		}
 		else {
-			passToKalaha(getBowl(bowlsUntillKalaha(0) * 2 + 1).takeStones() + 1);
+			numStones++;
 		}	
 	}
 	

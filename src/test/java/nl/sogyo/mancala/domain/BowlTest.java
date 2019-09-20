@@ -28,8 +28,8 @@ public class BowlTest {
 	
 	@Test
 	public void testPassThreeStones() {
-		b.pass(3);
-		for (int i = 1; i < 4; i++) {
+		b.play(0);
+		for (int i = 1; i < 5; i++) {
 			Assert.assertEquals(4 + 1, b.getBowl(i).getNumStones());
 		}
 		Assert.assertEquals(4, b.getBowl(5).getNumStones());
@@ -90,10 +90,22 @@ public class BowlTest {
 	@Test
 	public void testEndInEmptyBowlCurrentPlayer() {
 		b.play(4);
-		b.play(8);
+		Assert.assertEquals(0, b.getBowl(4).getNumStones());
+		b.play(7);
+		Assert.assertEquals(0, b.getBowl(7).getNumStones());
+		Assert.assertEquals(4, b.getNumStones());
 		b.play(0);
 		Assert.assertEquals(0, b.getBowl(4).getNumStones());
-		Assert.assertEquals(9, b.getKalaha().getNumStones());
+		Assert.assertEquals(7, b.getKalaha().getNumStones());
+	}
+	
+	@Test
+	public void testEndInEmptyBowlOtherPlayer() {
+		b.play(0);
+		Assert.assertEquals(0, b.getNumStones());
+		b.play(10);
+		Assert.assertEquals(1, b.getBowl(10).getKalaha().getNumStones());
+		Assert.assertEquals(0, b.getKalaha().getNumStones());
 	}
 	
 	@Before

@@ -12,9 +12,12 @@ public class Kalaha extends AbstractBowl{
 	}
 	
 	public void pass(int numStonesPrevABowl) {
-		next.pass(numStonesPrevABowl);
-		if (player.isMyTurn()) {
+		if (player.isMyTurn() && numStonesPrevABowl != 1) {
+			next.pass(numStonesPrevABowl - 1);
 			numStones++;
+		}
+		else {
+			next.pass(numStonesPrevABowl);
 		}
 	}
 	
