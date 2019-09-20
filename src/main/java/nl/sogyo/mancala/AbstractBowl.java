@@ -42,13 +42,16 @@ public abstract class AbstractBowl {
 	public void pass(int numStonesFromPrevABowl) {
 		if (numStonesFromPrevABowl != 1) {
 			next.pass(numStonesFromPrevABowl - 1);
-		}
-		if (numStones == 0 && player.isMyTurn()) {
-			passToKalaha(getBowl(bowlsUntillKalaha(0) * 2 + 1).takeStones() + 1);
-		}
-		else {
 			numStones++;
-		}	
+		}
+		else if (numStones == 0 && player.isMyTurn()) {
+			passToKalaha(getBowl(bowlsUntillKalaha(0) * 2).takeStones() + 1);
+			player.switchTurn();
+		}
+		else if (numStonesFromPrevABowl == 1) {
+			numStones++;
+			player.switchTurn();
+		}
 	}
 	
 	public void passToKalaha(int numStones) {
@@ -79,19 +82,27 @@ public abstract class AbstractBowl {
 
 	public void play(int bowlNum) {
 		if (bowlNum == 0) {
-			next.pass(numStones);
-			numStones = 0;
-			player.switchTurn();
+			if (player.isMyTurn() && numStones != 0) {
+				next.pass(numStones);
+				numStones = 0;
+			}
 		}
 		else {
 			next.play(bowlNum - 1);
 		}
 	}
 	
-	public boolean isGameOver() {
-		if (numStones == 0) {
-			return next.isGameOver();
+	public boolean isGameOver(int timesPassedKalaha) {
+		if (player.isMyTurn()) {
+			if (numStones == 0) {
+				return next.isGameOver(timesPassedKalaha);
+			}
+			return false;
 		}
-		return false;
+		else {
+			return next.isGameOver(timesPassedKalaha);
+		}
 	}
+	
+	public abstract String getBowlInfo(int bowlsNext);
 }

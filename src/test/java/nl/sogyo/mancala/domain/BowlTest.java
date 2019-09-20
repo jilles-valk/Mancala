@@ -77,7 +77,7 @@ public class BowlTest {
 		for (int i = 0; i < 6; i++) {
 			b.play(i);
 		}
-		Assert.assertTrue(b.isGameOver());
+		Assert.assertTrue(b.isGameOver(0));
 	}
 	
 	@Test 
@@ -96,7 +96,7 @@ public class BowlTest {
 		Assert.assertEquals(4, b.getNumStones());
 		b.play(0);
 		Assert.assertEquals(0, b.getBowl(4).getNumStones());
-		Assert.assertEquals(7, b.getKalaha().getNumStones());
+		Assert.assertEquals(8, b.getKalaha().getNumStones());
 	}
 	
 	@Test
@@ -106,6 +106,7 @@ public class BowlTest {
 		b.play(10);
 		Assert.assertEquals(1, b.getBowl(10).getKalaha().getNumStones());
 		Assert.assertEquals(0, b.getKalaha().getNumStones());
+		Assert.assertEquals(5, b.getBowl(1).getNumStones());
 	}
 	
 	@Before

@@ -11,4 +11,13 @@ public class Bowl extends AbstractBowl{
 		super(p1, size);
 		numStones = 4;
 	}
+	
+	public String getBowlInfo(int bowlsNext) {
+		if (bowlsNext == 0) {
+			return "[" + numStones + "]"; 
+		}
+		else {
+			return next.getBowlInfo(bowlsNext - 1);
+		}
+	}
 }
