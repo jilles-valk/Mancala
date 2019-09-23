@@ -12,6 +12,17 @@ public class Bowl extends AbstractBowl{
 		numStones = 4;
 	}
 	
+	public boolean isGameOver(int timesPassedKalaha, int numZero) {
+		if (numStones == 0) {
+			return next.isGameOver(timesPassedKalaha, numZero + 1);
+		}
+		return next.isGameOver(timesPassedKalaha, numZero);
+	}
+	
+	public Player getWinner(int otherPlayersStones) {
+		return next.getWinner(otherPlayersStones);
+	}
+	
 	public String getBowlInfo(int bowlsNext) {
 		if (bowlsNext == 0) {
 			return "[" + numStones + "]"; 
@@ -19,9 +30,5 @@ public class Bowl extends AbstractBowl{
 		else {
 			return next.getBowlInfo(bowlsNext - 1);
 		}
-	}
-	
-	public Player getWinner() {
-		return next.getWinner();
 	}
 }

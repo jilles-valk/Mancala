@@ -27,7 +27,7 @@ public class TestFrontEnd {
 				}
 			}
 		}
-		if (b.getWinner().isMyTurn() == p1.isMyTurn()) {
+		if (b.getWinner(-1).isMyTurn() == p1.isMyTurn()) {
 			System.out.println("Player 1 has won!");
 		}
 		else {

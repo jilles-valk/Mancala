@@ -11,7 +11,7 @@ public class Kalaha extends AbstractBowl{
 		return this;
 	}
 
-	public void pass(int numStonesPrevABowl) {
+	protected void pass(int numStonesPrevABowl) {
 		if (player.isMyTurn()) {
 			if (numStonesPrevABowl != 1) {
 				next.pass(numStonesPrevABowl - 1);
@@ -26,7 +26,7 @@ public class Kalaha extends AbstractBowl{
 		}
 	}
 
-	public void passToKalaha(int numStones) {
+	protected void passToKalaha(int numStones) {
 		if (player.isMyTurn()) {
 			this.numStones += numStones;
 		}
@@ -34,7 +34,8 @@ public class Kalaha extends AbstractBowl{
 			next.passToKalaha(numStones);
 		}
 	}
-	public int bowlsUntillKalaha(int bowlsUpToHere) {
+	
+	protected int bowlsUntillKalaha(int bowlsUpToHere) {
 		return bowlsUpToHere;
 	}
 
@@ -48,12 +49,22 @@ public class Kalaha extends AbstractBowl{
 		if (timesZero == 6 && player.isMyTurn()) {
 			return true;
 		}
-		if (player.isMyTurn() && timesPassedKalaha == 2) {
+		if (player.isMyTurn()) {
 			return false;
 		}
 		return next.isGameOver(timesPassedKalaha + 1, 0);
 	}
-
+	
+	public Player getWinner(int otherPlayersStones) {
+		if (otherPlayersStones != -1) {
+			if (otherPlayersStones > numStones) {
+				return player.getOpponent();
+			}
+			return player;
+		}
+		return getWinner(numStones);
+	}
+	
 	public String getBowlInfo(int numBowlsRight) {
 		if (numBowlsRight == 0) {
 			return "{" + numStones + "}"; 
@@ -61,12 +72,5 @@ public class Kalaha extends AbstractBowl{
 		else {
 			return next.getBowlInfo(numBowlsRight - 1);
 		}
-	}
-	
-	public Player getWinner() {
-		if (next.getKalaha().numStones > numStones) {
-			return player.getOpponent();
-		}
-		return player;
 	}
 }

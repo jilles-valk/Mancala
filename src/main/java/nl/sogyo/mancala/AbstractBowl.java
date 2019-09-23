@@ -28,17 +28,8 @@ public abstract class AbstractBowl {
 		this.next = new Bowl(p1, this, size - 1);
 		player = p1;
 	}
-
 	
-	public Player getPlayer() {
-		return player;
-	}
-	
-	public int getNumStones() {
-		return numStones;
-	}
-	
-	public void pass(int numStonesFromPrevABowl) {
+	protected void pass(int numStonesFromPrevABowl) {
 		if (numStonesFromPrevABowl != 1) {
 			next.pass(numStonesFromPrevABowl - 1);
 			numStones++;
@@ -63,25 +54,12 @@ public abstract class AbstractBowl {
 		}
 	}
 	
-	public void passToKalaha(int numStones) {
+	protected void passToKalaha(int numStones) {
 		next.passToKalaha(numStones);
 	}
 	
-	public int bowlsUntillKalaha(int bowlsUpToHere) {
+	protected int bowlsUntillKalaha(int bowlsUpToHere) {
 		return next.bowlsUntillKalaha(bowlsUpToHere + 1);
-	}
-	
-	public AbstractBowl getBowl(int numBowlsRight) {
-		if (numBowlsRight == 1) {
-			return next;
-		}
-		else {
-			return next.getBowl(numBowlsRight - 1);
-		}
-	}
-	
-	public Kalaha getKalaha() {
-		return next.getKalaha();
 	}
 
 	public void play(int bowlNum) {
@@ -97,17 +75,9 @@ public abstract class AbstractBowl {
 		}
 	}
 	
-	public boolean isGameOver(int timesPassedKalaha, int numZero) {
-		if (numStones == 0) {
-			return next.isGameOver(timesPassedKalaha, numZero + 1);
-		}
-		if (timesPassedKalaha == 1 && numStones != 0) {
-			return false;
-		}
-		return next.isGameOver(timesPassedKalaha, numZero);
-	}
+	public abstract boolean isGameOver(int timesPassedKalaha, int numZero);
 
-	public abstract Player getWinner();
+	public abstract Player getWinner(int otherPlayersStones);
 	
 	public abstract String getBowlInfo(int bowlsNext);
 }
