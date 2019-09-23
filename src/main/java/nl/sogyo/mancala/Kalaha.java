@@ -2,12 +2,12 @@ package nl.sogyo.mancala;
 
 public class Kalaha extends AbstractBowl{
 
-	public Kalaha(Player p1, AbstractBowl first, AbstractBowl next, int size) {
-		super(p1, first, next, size);
+	public Kalaha(Player p1, AbstractBowl first, int numBowlsLeftToGo) {
+		super(p1, first, numBowlsLeftToGo);
 		numStones = 0;
 	}
 
-	public AbstractBowl getKalaha() {
+	public Kalaha getKalaha() {
 		return this;
 	}
 
@@ -27,7 +27,12 @@ public class Kalaha extends AbstractBowl{
 	}
 
 	public void passToKalaha(int numStones) {
-		this.numStones += numStones;
+		if (player.isMyTurn()) {
+			this.numStones += numStones;
+		}
+		else {
+			next.passToKalaha(numStones);
+		}
 	}
 	public int bowlsUntillKalaha(int bowlsUpToHere) {
 		return bowlsUpToHere;
@@ -35,7 +40,7 @@ public class Kalaha extends AbstractBowl{
 
 	public void play(int bowlNum) {
 		if (bowlNum != 0) {
-			next.play(bowlNum - 1);
+			super.play(bowlNum);
 		}
 	}
 
@@ -49,16 +54,16 @@ public class Kalaha extends AbstractBowl{
 		return next.isGameOver(timesPassedKalaha + 1, 0);
 	}
 
-	public String getBowlInfo(int bowlsNext) {
-		if (bowlsNext == 0) {
+	public String getBowlInfo(int numBowlsRight) {
+		if (numBowlsRight == 0) {
 			return "{" + numStones + "}"; 
 		}
 		else {
-			return next.getBowlInfo(bowlsNext - 1);
+			return next.getBowlInfo(numBowlsRight - 1);
 		}
 	}
 	
-	protected Player getWinner() {
+	public Player getWinner() {
 		if (next.getKalaha().numStones > numStones) {
 			return player.getOpponent();
 		}

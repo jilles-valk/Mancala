@@ -5,28 +5,27 @@ public abstract class AbstractBowl {
 	protected AbstractBowl next;
 	protected int numStones;
 	
-	public AbstractBowl(Player p1, AbstractBowl first, AbstractBowl next, int size) {
-		if (size == 8 || size == 1) {
-			this.next = new Kalaha(p1, first, next, size - 1);
+	public AbstractBowl(Player p1, AbstractBowl first, int numBowlsLeftToGo) {
+		if (numBowlsLeftToGo == 8 || numBowlsLeftToGo == 1) {
+			this.next = new Kalaha(p1, first, numBowlsLeftToGo - 1);
 		}
-		else if (size == 0) {
+		else if (numBowlsLeftToGo == 0) {
 			this.next = first;
 		}
 		else {
-			this.next = new Bowl(p1, first, next, size - 1);
+			this.next = new Bowl(p1, first, numBowlsLeftToGo - 1);
 		}
 		
-		if (size >= 7) {
+		if (numBowlsLeftToGo >= 7) {
 			player = p1;
 		}
 		else {
 			player = p1.getOpponent();
 		}
-		
 	}
 	
 	public AbstractBowl(Player p1, int size) {
-		this.next = new Bowl(p1, this, null, size - 1);
+		this.next = new Bowl(p1, this, size - 1);
 		player = p1;
 	}
 
@@ -45,7 +44,7 @@ public abstract class AbstractBowl {
 			numStones++;
 		}
 		else if (numStones == 0 && player.isMyTurn()) {
-			passToKalaha(getBowl(bowlsUntillKalaha(0) * 2).takeStones() + 1);
+			passAllToKalaha(bowlsUntillKalaha(0) * 2);
 			player.switchTurn();
 		}
 		else if (numStonesFromPrevABowl == 1) {
@@ -54,17 +53,22 @@ public abstract class AbstractBowl {
 		}
 	}
 	
+	private void passAllToKalaha(int numBowlsRight) {
+		if (numBowlsRight == 0) {
+			passToKalaha(numStones + 1);
+			numStones = 0;
+		}
+		else {
+			next.passAllToKalaha(numBowlsRight - 1);
+		}
+	}
+	
 	public void passToKalaha(int numStones) {
 		next.passToKalaha(numStones);
 	}
+	
 	public int bowlsUntillKalaha(int bowlsUpToHere) {
 		return next.bowlsUntillKalaha(bowlsUpToHere + 1);
-	}
-	
-	private int takeStones() {
-		int stonesToReturn = numStones;
-		numStones = 0;
-		return stonesToReturn;
 	}
 	
 	public AbstractBowl getBowl(int numBowlsRight) {
@@ -76,7 +80,7 @@ public abstract class AbstractBowl {
 		}
 	}
 	
-	public AbstractBowl getKalaha() {
+	public Kalaha getKalaha() {
 		return next.getKalaha();
 	}
 
@@ -103,7 +107,7 @@ public abstract class AbstractBowl {
 		return next.isGameOver(timesPassedKalaha, numZero);
 	}
 
-	protected abstract Player getWinner();
+	public abstract Player getWinner();
 	
 	public abstract String getBowlInfo(int bowlsNext);
 }

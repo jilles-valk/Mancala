@@ -2,13 +2,13 @@ package nl.sogyo.mancala;
 
 public class Bowl extends AbstractBowl{
 
-	public Bowl(Player p1, AbstractBowl first, AbstractBowl next, int size) {
-		super(p1, first, next, size);
+	public Bowl(Player p1, AbstractBowl first, int numBowlsLeftToGo) {
+		super(p1, first, numBowlsLeftToGo);
 		numStones = 4;
 	}
 
-	public Bowl(Player p1, int size) {
-		super(p1, size);
+	public Bowl(Player p1, int numBowlsLeftToGo) {
+		super(p1, numBowlsLeftToGo);
 		numStones = 4;
 	}
 	
@@ -21,7 +21,7 @@ public class Bowl extends AbstractBowl{
 		}
 	}
 	
-	protected Player getWinner() {
+	public Player getWinner() {
 		return next.getWinner();
 	}
 }
