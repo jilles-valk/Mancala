@@ -31,17 +31,22 @@ public abstract class AbstractBowl {
 	
 	protected void pass(int numStonesFromPrevABowl) {
 		if (numStonesFromPrevABowl != 1) {
+			numStones++;
 			next.pass(numStonesFromPrevABowl - 1);
-			numStones++;
 		}
-		else if (numStones == 0 && player.isMyTurn()) {
+		else {
+			endOfTurn();
+		}
+	}
+	
+	private void endOfTurn() {
+		if (numStones == 0 && player.isMyTurn()) {
 			passAllToKalaha(bowlsUntillKalaha(0) * 2);
-			player.switchTurn();
 		}
-		else if (numStonesFromPrevABowl == 1) {
+		else {
 			numStones++;
-			player.switchTurn();
 		}
+		player.switchTurn();
 	}
 	
 	private void passAllToKalaha(int numBowlsRight) {

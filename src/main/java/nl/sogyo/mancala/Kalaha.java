@@ -14,8 +14,8 @@ public class Kalaha extends AbstractBowl{
 	protected void pass(int numStonesPrevABowl) {
 		if (player.isMyTurn()) {
 			if (numStonesPrevABowl != 1) {
-				next.pass(numStonesPrevABowl - 1);
 				numStones++;
+				next.pass(numStonesPrevABowl - 1);
 			}
 			else {
 				numStones++;
@@ -57,10 +57,18 @@ public class Kalaha extends AbstractBowl{
 	
 	public Player getWinner(int otherPlayersStones) {
 		if (otherPlayersStones != -1) {
-			if (otherPlayersStones > numStones) {
+			if (numStones > otherPlayersStones) {
+				if (player.isMyTurn()) {
+					return player;
+				}
 				return player.getOpponent();
 			}
-			return player;
+			if (player.isMyTurn()) {
+				return player.getOpponent();
+			}
+			else {
+				return player;
+			}
 		}
 		return getWinner(numStones);
 	}

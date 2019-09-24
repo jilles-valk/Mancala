@@ -16,7 +16,7 @@ public class TestFrontEnd {
 		b = new Bowl(p1, bowlSize);
 		Scanner input = new Scanner(System.in);
 
-//		startUp();
+		startUp();
 		
 		while (!b.isGameOver(0, 0)) {
 			printBoard();
@@ -57,25 +57,26 @@ public class TestFrontEnd {
 	}
 	
 	private void startUp() {
-		b.play(0);
-		b.play(7);
-		b.play(1);
-		b.play(8);
-		b.play(2);
-		b.play(9);
-		b.play(3);
-		b.play(4);
-		b.play(12);
-		b.play(11);
-		b.play(10);
-		b.play(11);
 		b.play(5);
-		b.play(12);
+		b.play(7);
+		b.play(2);
+		b.play(5);
+		b.play(1);
+		b.play(10);
+		b.play(4);
+		b.play(8);
 		b.play(0);
+		b.play(2);
+		b.play(7);
+		b.play(3);
 		b.play(7);
 		b.play(1);
-		printBoard();
+		b.play(10);
 		b.play(8);
+		b.play(4);
+		b.play(5);
+		b.play(7);
+		b.play(3);
 		printBoard();
 	}
 
